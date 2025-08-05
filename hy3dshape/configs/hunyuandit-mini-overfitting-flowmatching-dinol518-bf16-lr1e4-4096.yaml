@@ -33,22 +33,6 @@ dataset:
     std: &std [0.5, 0.5, 0.5]
 
     #! Point cloud sampling
-    # Important: The total number of points (pc_size + pc_sharpedge_size) is coupled with the
-    # architecture of the pretrained ShapeVAE in `first_stage_config`. You must ensure that
-    # the total number of points provided by the dataset matches the model's expectation.
-    #
-    # For the default pretrained ShapeVAE (`tencent/Hunyuan3D-2.1` VAE), the model
-    # implicitly expects a total of 81920 points.
-    #
-    # Correct configuration (for the default model):
-    #   pc_size: 81920
-    #   pc_sharpedge_size: 0
-    #
-    # Incorrect configuration that will cause a `split_with_sizes` RuntimeError:
-    #   pc_size: 10240
-    #   pc_sharpedge_size: 10240
-    #
-    # If you need to use a different number of points, you must retrain the ShapeVAE model first.
     pc_size: &pc_size 81920
     pc_sharpedge_size: &pc_sharpedge_size 0
     sharpedge_label: &sharpedge_label true
@@ -74,6 +58,11 @@ model:
     first_stage_config:
       target: hy3dshape.models.autoencoders.ShapeVAE
       from_pretrained: tencent/Hunyuan3D-2.1
+      #Ensure same with the dataset setting
+      params: 
+        pc_size: 81920              
+        pc_sharpedge_size: 0 
+
 
     cond_stage_config:
       target: hy3dshape.models.conditioner.SingleImageEncoder
