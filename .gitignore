@@ -6,6 +6,9 @@ __pycache__/
 # C extensions
 *.so
 
+hunyuan3d-dit-v2-1/*
+hunyuan3d-paintpbr-v2-1/*
+
 # Distribution / packaging
 .Python
 build/
