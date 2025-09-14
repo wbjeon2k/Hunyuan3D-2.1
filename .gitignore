@@ -6,6 +6,12 @@ __pycache__/
 # C extensions
 *.so
 
+# 3d object files
+*.obj
+*.mtl
+*.ply
+*.glb
+
 hunyuan3d-dit-v2-1/*
 hunyuan3d-paintpbr-v2-1/*
 
