@@ -18,14 +18,15 @@ dataset:
   target: hy3dshape.data.dit_asl.AlignedShapeLatentModule
   params:
     #! Base setting
-    #https://github.com/Tencent-Hunyuan/Hunyuan3D-2.1/issues/76
     batch_size: 1
     num_workers: 4
     val_num_workers: 4
 
     # Data
-    train_data_list: tools/mini_trainset/preprocessed
-    val_data_list: tools/mini_trainset/preprocessed
+    # train_data_list: tools/mini_trainset/preprocessed
+    # val_data_list: tools/mini_trainset/preprocessed
+    train_data_list: hy3dshape/tools/example_output/example
+    #val_data_list: hy3dshape/tools/example_output/example
 
     #! Image loading
     cond_stage_key: "image"
@@ -82,9 +83,7 @@ model:
         in_channels: 64
         hidden_size: 2048
         context_dim: 1024
-        #depth: 16
-        # reduce depth for lower VRAM
-        depth: 12
+        depth: 16
         num_heads: 16
         qk_norm: true
         text_len: 1370

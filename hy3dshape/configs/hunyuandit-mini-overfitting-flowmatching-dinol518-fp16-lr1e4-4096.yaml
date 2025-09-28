@@ -1,11 +1,12 @@
 name: "HunyuanDiT flowmatching; VAE: 4096 token length; ImageEncoder: DINO-v2 Large; ImageSize: 518"
+# Modified for FP16 to support Flash Attention on Turing GPUs
 # Overfitting successfully cost 68G memory under current settings
 # You can adjust model arch or batch_size according to your GPU memory
 
 training:
   steps: 10_0000_0000
   use_amp: true
-  amp_type: "bf16"
+  amp_type: "16" # Changed from bf16 to fp16 for Turing GPU compatibility
   base_lr: 1e-4
   gradient_clip_val: 1.0
   gradient_clip_algorithm: "norm"

@@ -1,9 +1,14 @@
 --extra-index-url https://mirrors.cloud.tencent.com/pypi/simple/
 --extra-index-url https://mirrors.aliyun.com/pypi/simple
+# https://github.com/Tencent-Hunyuan/Hunyuan3D-2.1/issues/128#issuecomment-3154814012
+--extra-index-url https://download.blender.org/pypi/
 
 # Build Tools
 ninja==1.11.1.1
 pybind11==2.13.4
+
+# Blender
+bpy==4.0
 
 # Core ML/Deep Learning
 transformers==4.46.0
@@ -51,9 +56,6 @@ psutil==6.0.0
 
 # GPU Computing (requires CUDA)
 cupy-cuda12x==13.4.1
-
-# Blender
-bpy==4.2
 
 # ONNX Runtime
 onnxruntime==1.16.3

@@ -108,6 +108,9 @@ def get_args():
     parser.add_argument("--deepspeed2", default=False, action="store_true")
     parser.add_argument("--scale_lr", type=bool, nargs="?", const=True, default=False,
                         help="scale base-lr by ngpu * batch_size * n_accumulate")
+    # Add local_rank argument for DeepSpeed launcher compatibility
+    parser.add_argument("--local_rank", type=int, default=-1,
+                        help="Local rank for distributed training (automatically set by DeepSpeed launcher)")
     return parser.parse_args()
     
 

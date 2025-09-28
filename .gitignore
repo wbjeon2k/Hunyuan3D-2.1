@@ -3,8 +3,15 @@ __pycache__/
 *.py[cod]
 *$py.class
 
+# blender
+blender-4.5.3-linux-x64/
+
 # C extensions
 *.so
+
+# tar balls
+*.tar.xz
+*.tar.gz
 
 # 3d object files
 *.obj
