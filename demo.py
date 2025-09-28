@@ -1,3 +1,4 @@
+import argparse
 import sys
 sys.path.insert(0, './hy3dshape')
 sys.path.insert(0, './hy3dpaint')
@@ -21,14 +22,19 @@ except Exception as e:
 model_path = 'tencent/Hunyuan3D-2.1'
 pipeline_shapegen = Hunyuan3DDiTFlowMatchingPipeline.from_pretrained(model_path)
 
-image_path = 'assets/demo.png'
+argparser = argparse.ArgumentParser()
+argparser.add_argument('--img_name_in_asset', type=str, default='toilet_img_0008',
+                        help='Name of the image in assets folder. For example, "assets/toilet_img_0008.png" should be "toilet_img_0008"')
+
+args = argparser.parse_args()
+image_path = f'assets/{args.img_name_in_asset}.png'
 image = Image.open(image_path).convert("RGBA")
 if image.mode == 'RGB':
     rembg = BackgroundRemover()
     image = rembg(image)
 
 mesh = pipeline_shapegen(image=image)[0]
-mesh.export('demo.glb')
+mesh.export(f'{args.img_name_in_asset}.glb')
 
 # paint
 max_num_view = 6  # can be 6 to 9
@@ -39,9 +45,9 @@ conf.multiview_cfg_path = "hy3dpaint/cfgs/hunyuan-paint-pbr.yaml"
 conf.custom_pipeline = "hy3dpaint/hunyuanpaintpbr"
 paint_pipeline = Hunyuan3DPaintPipeline(conf)
 
-output_mesh_path = 'demo_textured.glb'
+output_mesh_path = f'{args.img_name_in_asset}_textured.glb'
 output_mesh_path = paint_pipeline(
-    mesh_path = "demo.glb", 
-    image_path = 'assets/demo.png',
+    mesh_path = f'{args.img_name_in_asset}.glb', 
+    image_path = f'assets/{args.img_name_in_asset}.png',
     output_mesh_path = output_mesh_path
 )

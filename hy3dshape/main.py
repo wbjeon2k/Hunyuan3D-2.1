@@ -26,7 +26,7 @@ allow_ops_in_compiled_graph()
 
 import pytorch_lightning as pl
 from pytorch_lightning.callbacks import ModelCheckpoint, Callback
-from pytorch_lightning.strategies import DDPStrategy, DeepSpeedStrategy
+from pytorch_lightning.strategies import DDPStrategy, DDPSpawnStrategy, DeepSpeedStrategy
 from pytorch_lightning.loggers import Logger, TensorBoardLogger
 from pytorch_lightning.utilities import rank_zero_info
 
@@ -173,8 +173,14 @@ if __name__ == "__main__":
             ddp_strategy = DeepSpeedStrategy(stage=1)
         elif args.deepspeed2:
             ddp_strategy = 'deepspeed_stage_2'
+        elif "LOCAL_RANK" in os.environ:
+            # Using torchrun/deepspeed launcher - each process handles one GPU
+            #ddp_strategy = DDPStrategy(find_unused_parameters=False, bucket_cap_mb=1500)
+            ddp_strategy = "ddp"
         else:
-            ddp_strategy = DDPStrategy(find_unused_parameters=False, bucket_cap_mb=1500)
+            # Using python3 directly - need DDPSpawnStrategy to spawn processes for each GPU
+            # ddp_strategy = DDPSpawnStrategy(find_unused_parameters=False)
+            ddp_strategy = "ddp"
     else:
         ddp_strategy = None  # 'auto'
 
@@ -188,13 +194,24 @@ if __name__ == "__main__":
         rank_zero_info(f'Using 32 bit precision')
     rank_zero_info(f'*' * 100)
 
+    # # Device configuration depends on launch method
+    # if "LOCAL_RANK" in os.environ:
+    #     # Using torchrun/deepspeed launcher - each process handles one GPU
+    #     devices = "auto"
+    #     rank_zero_info("Detected distributed launcher (torchrun/deepspeed) - using auto device assignment")
+    # else:
+    #     # Using python3 directly with DDPSpawnStrategy
+    #     devices = args.num_gpus
+    #     rank_zero_info(f"Using DDPSpawnStrategy - will spawn {devices} processes for {devices} GPUs")
+
     trainer = pl.Trainer(
         max_steps=training_cfg.steps,
         precision=amp_type,
         callbacks=callbacks,
         accelerator="gpu",
-        devices=args.num_gpus,
-        num_nodes=training_cfg.num_nodes,
+        #devices=devices,
+        devices=[0,1],
+        #num_nodes=training_cfg.num_nodes,
         strategy=ddp_strategy,
         gradient_clip_val=training_cfg.get('gradient_clip_val'),
         gradient_clip_algorithm=training_cfg.get('gradient_clip_algorithm'),

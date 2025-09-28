@@ -19,7 +19,7 @@ dataset:
   params:
     #! Base setting
     #https://github.com/Tencent-Hunyuan/Hunyuan3D-2.1/issues/76
-    batch_size: 1
+    batch_size: 2
     num_workers: 4
     val_num_workers: 4
 

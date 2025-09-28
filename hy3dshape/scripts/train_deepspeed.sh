@@ -4,7 +4,13 @@
 # Try to auto-detect a suitable network interface if NCCL_SOCKET_IFNAME is not already set.
 if [ -z "$NCCL_SOCKET_IFNAME" ]; then
     # Find the first physical-like interface by excluding common virtual/loopback names.
-    DETECTED_IFACE=$(ls /sys/class/net | grep -vE '^(lo|docker|veth|cali|tunl|kube|ib|usb)' | head -n 1)
+    # DETECTED_IFACE=$(ls /sys/class/net | grep -vE '^(lo|docker|veth|cali|tunl|kube|ib|usb)' | head -n 1)
+    DETECTED_IFACE=$(for iface in $(ls /sys/class/net | grep -vE '^(lo|docker|veth|cali|tunl|kube|ib|usb)'); do
+      if ip link show "$iface" | grep -q "state UP"; then
+          echo "$iface"
+          break
+      fi
+    done)
     if [ -n "$DETECTED_IFACE" ]; then
         echo "NCCL_SOCKET_IFNAME is not set. Auto-detected and exporting: $DETECTED_IFACE"
         export NCCL_SOCKET_IFNAME=$DETECTED_IFACE

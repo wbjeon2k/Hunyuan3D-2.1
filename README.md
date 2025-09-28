@@ -1,26 +1,25 @@
+## How to install
+- Install CUDA 12.4 from <https://developer.nvidia.com/cuda-12-4-0-download-archive>
+- Set CUDA path in `~/.bashrc`.
+- Either:
+  - Use `condarequirements.yaml` to make a Conda venv and to install Pytorch, Pytorch Lightning, etc.
+  - Run `tmp.sh` to install Pytorch, Pytorch Lightning, etc.
 
-<p align="center">
-  <img src="assets/images/teaser.jpg">
-</p>
+## Test image-to-3D
+- `demo.py` : Generates 3D object with a single image.
+- `--img_name_in_asset` : Use this option to select specific image to test.
+  - `--img_name_in_asset toilet_img_0008` : Generate a 3D object from `assets/toilet_img_0008.png`.
+- Generating a 3D object takes around 1 minute.
 
+## Test finetuning hy3dshape
+- `cd ./hy3dshape && bash fixed_train_launch.sh`
+- `fixed_train_launch.sh` executes training(overfitting) for example dataset in `hy3dshape/tools/mini_trainset/preprocessed`.
+- Training config file is `hy3dshape/configs/hunyuandit-mini-overfitting-flowmatching-dinol518-bf16-lr1e4-4096.yaml`.
+- Only for training a 3D shape generator.
+- Even with extensive fix, multi-gpu training fails.
+- With A6000(48GB VRAM), single iteration task 2 seconds with `batch_size=2`.
 
-<div align="center">
-  <a href=https://3d.hunyuan.tencent.com target="_blank"><img src=https://img.shields.io/badge/Official%20Site-333399.svg?logo=homepage height=22px></a>
-  <a href=https://huggingface.co/spaces/tencent/Hunyuan3D-2.1  target="_blank"><img src=https://img.shields.io/badge/%F0%9F%A4%97%20Demo-276cb4.svg height=22px></a>
-  <a href=https://huggingface.co/tencent/Hunyuan3D-2.1 target="_blank"><img src=https://img.shields.io/badge/%F0%9F%A4%97%20Models-d96902.svg height=22px></a>
-  <a href=https://3d-models.hunyuan.tencent.com/ target="_blank"><img src= https://img.shields.io/badge/Page-bb8a2e.svg?logo=github height=22px></a>
-  <a href=https://discord.gg/dNBrdrGGMa target="_blank"><img src= https://img.shields.io/badge/Discord-white.svg?logo=discord height=22px></a>
-  <a href=https://arxiv.org/pdf/2506.15442 target="_blank"><img src=https://img.shields.io/badge/Report-b5212f.svg?logo=arxiv height=22px></a>
-  <a href=https://x.com/TencentHunyuan target="_blank"><img src=https://img.shields.io/badge/Hunyuan-black.svg?logo=x height=22px></a>
- <a href="#community-resources" target="_blank"><img src=https://img.shields.io/badge/Community-lavender.svg?logo=homeassistantcommunitystore height=22px></a>
-</div>
-
-[//]: # (  <a href=# target="_blank"><img src=https://img.shields.io/badge/Report-b5212f.svg?logo=arxiv height=22px></a>)
-
-[//]: # (  <a href=# target="_blank"><img src= https://img.shields.io/badge/Colab-8f2628.svg?logo=googlecolab height=22px></a>)
-
-[//]: # (  <a href="#"><img alt="PyPI - Downloads" src="https://img.shields.io/pypi/v/mulankit?logo=pypi"  height=22px></a>)
-<br>
+## Below is the original readme.md in Hunyuan-2.1
 
 ## 🔥 News
 
